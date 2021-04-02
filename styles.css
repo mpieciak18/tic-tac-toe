@@ -1,0 +1,48 @@
+@font-face {
+    font-family: 'Tisa Sans Pro';
+    src: url(./fonts/tisa-sans-pro.ttf)
+}
+header {
+    text-align: center;
+}
+body {
+    font-family: 'Tisa Sans Pro';
+}
+#grid {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    border-color: slategray;
+    border-style: solid;
+    border-width: 1px;
+    width: max-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+.grid-row {
+    display: flex;
+    flex-direction: row;
+}
+.grid-square {
+    height: 100px;
+    width: 100px;
+    border-color: slategray;
+    border-style: solid;
+    border-width: 1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    font-size: 75px;
+}
+@media (hover: hover) {
+    .grid-square:hover {
+      background-color: lightgray;
+    }
+}
+#reset-button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+}
