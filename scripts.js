@@ -6,6 +6,8 @@ const gameBoard = (function() {
 
     let gameDone = false;
 
+    let numRounds = 0;
+
     const squares = document.getElementsByClassName('grid-square');
     const squaresArr = Array.from(squares);
 
@@ -34,8 +36,10 @@ const gameBoard = (function() {
             squaresArr[i].innerHTML = '';
         };
         whoseTurn = 1;
+        numRounds = 0;
         gameDone = false;
         statusMessage.innerText = `It is Player X\'s turn.`;
+        addClicksToSquares();
     };
 
     const displayWin = function() {
@@ -46,6 +50,10 @@ const gameBoard = (function() {
         };
     };
 
+    const displayTie = function() {
+        statusMessage.innerText = 'The game is a tie!'
+    };
+
     const displayTurn = function() {
         if (whoseTurn == 1) {
             statusMessage.innerText = `It is Player X\'s turn.`
@@ -54,12 +62,17 @@ const gameBoard = (function() {
         };
     };
 
-    const updatePlays = function(event, play, rawIndex) {
-        // updates the gameboard squares
-        event.target.innerHTML = play;
+    const updatePlaysArr = function(event, play, rawIndex) {
         // updates the play array
         const index = Number(rawIndex);
         plays[index] = play;
+    };
+
+    const updatePlaysDom = function(event, play) {
+        // updates the gameboard squares
+        square = event.target;
+        square.innerHTML = play;
+        square.removeEventListener('click', playMove);
     };
 
     const returnPlay = function() {
@@ -76,32 +89,38 @@ const gameBoard = (function() {
         whoseTurn *= -1;
     };
 
+    const addClicksToSquares = function() {
+        for (let i = 0; i < squaresArr.length; i++) {
+            let square = squaresArr[i];
+            square.addEventListener('click', playMove);
+        };
+    };
+
     const playMove = function(event) {
         if (gameDone == true) {
             return null;
         };
 
-        const play = returnPlay();
-        
-        const rawIndex = event.target.id.slice(7);
-        
-        updatePlays(event, play, rawIndex);
+        const play = returnPlay();       
+        const rawIndex = event.target.id.slice(7);       
+        updatePlaysArr(play, rawIndex);
+        updatePlaysDom(event, play);
+
+        numRounds += 1;
 
         if (checkForWin() == true) {
             displayWin();
             gameDone = true;
+        } else if (numRounds == 9) {
+            displayTie();
         } else {
             changeWhoseTurn();
             displayTurn();
         };
     };
 
-    for (let i = 0; i < squaresArr.length; i++) {
-        let square = squaresArr[i];
-        square.addEventListener('click', playMove);
-    }
-
+    addClicksToSquares();
     resetButton.addEventListener('click', resetGame);
 
-    return {squaresArr, plays};
+    return {squaresArr, plays, numRounds};
 })();
