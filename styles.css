@@ -4,9 +4,16 @@
 }
 header {
     text-align: center;
+    font-size: x-large;
 }
 body {
     font-family: 'Tisa Sans Pro';
+}
+#status {
+    height: 50px;
+    font-size: large;
+    text-align: center;
+    margin-bottom: 20px;
 }
 #grid {
     display: flex;
