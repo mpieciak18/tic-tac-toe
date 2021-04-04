@@ -7,7 +7,6 @@ const gameBoard = (function() {
     let gameDone = false;
 
     const squares = document.getElementsByClassName('grid-square');
-
     const squaresArr = Array.from(squares);
 
     const checkForWin = function() {
@@ -27,6 +26,18 @@ const gameBoard = (function() {
 
     const statusMessage = document.getElementById('status');
 
+    const resetButton = document.getElementById('reset-button');
+
+    const resetGame = function() {
+        for (let i = 0; i < 9; i++) {
+            plays[i] = null;
+            squaresArr[i].innerHTML = '';
+        };
+        whoseTurn = 1;
+        gameDone = false;
+        statusMessage.innerText = `It is Player X\'s turn.`;
+    };
+
     const displayWin = function() {
         if (whoseTurn == 1) {
             statusMessage.innerText = 'Player X wins!!!'
@@ -43,9 +54,20 @@ const gameBoard = (function() {
         };
     };
 
-    const updatePlays = function(play, rawIndex) {
+    const updatePlays = function(event, play, rawIndex) {
+        // updates the gameboard squares
+        event.target.innerHTML = play;
+        // updates the play array
         const index = Number(rawIndex);
         plays[index] = play;
+    };
+
+    const returnPlay = function() {
+        if (whoseTurn == 1) {
+            return 'X';
+        } else {
+            return 'O';
+        };
     };
 
     const changeWhoseTurn = function() {
@@ -59,17 +81,11 @@ const gameBoard = (function() {
             return null;
         };
 
-        let play = '';
-        if (whoseTurn == 1) {
-            event.target.innerHTML = 'X';
-            play = 'X';
-        } else {
-            event.target.innerHTML = 'O';
-            play = 'O';
-        };
+        const play = returnPlay();
         
         const rawIndex = event.target.id.slice(7);
-        updatePlays(play, rawIndex);
+        
+        updatePlays(event, play, rawIndex);
 
         if (checkForWin() == true) {
             displayWin();
@@ -84,6 +100,8 @@ const gameBoard = (function() {
         let square = squaresArr[i];
         square.addEventListener('click', playMove);
     }
+
+    resetButton.addEventListener('click', resetGame);
 
     return {squaresArr, plays};
 })();
