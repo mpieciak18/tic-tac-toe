@@ -62,7 +62,7 @@ const gameBoard = (function() {
         };
     };
 
-    const updatePlaysArr = function(event, play, rawIndex) {
+    const updatePlaysArr = function(play, rawIndex) {
         // updates the play array
         const index = Number(rawIndex);
         plays[index] = play;
@@ -122,5 +122,5 @@ const gameBoard = (function() {
     addClicksToSquares();
     resetButton.addEventListener('click', resetGame);
 
-    return {squaresArr, plays, numRounds};
+    return {squaresArr, plays};
 })();
