@@ -1,35 +1,31 @@
 const livePlayer = (function() {
     const playMove = function(event) {
-        if (logic.gameDone == true) {
+        if (gameBoard.gameDone == true) {
             return null;
         };
 
-        const play = logic.returnPlay();       
+        const play = gameBoard.returnPlay();       
         const rawIndex = event.target.id.slice(7);       
-        logic.updatePlaysArr(play, rawIndex);
-        board.updatePlaysDom(event, play);
+        gameBoard.updatePlaysArr(play, rawIndex);
+        gameBoard.updatePlaysDom(event, play);
 
-        logic.numRounds += 1;
+        gameBoard.numRounds += 1;
 
-        if (logic.checkForWin() == true) {
-            board.displayWin();
-            logic.gameDone = true;
-        } else if (logic.numRounds == 9) {
-            board.displayTie();
+        if (gameBoard.checkForWin() == true) {
+            gameBoard.displayWin();
+            gameBoard.gameDone = true;
+        } else if (gameBoard.numRounds == 9) {
+            gameBoard.displayTie();
         } else {
-            logic.changeWhoseTurn();
-            board.displayTurn();
+            gameBoard.changeWhoseTurn();
+            gameBoard.displayTurn();
         };
     };
 
     return {playMove};
 })();
 
-// const computerPlayer = (function() {
-
-// })();
-
-const logic = (function() {
+const gameBoard = (function() {
     const plays = [null, null, null, null, null, null, null, null, null];
 
     // sets user to play first
@@ -38,6 +34,9 @@ const logic = (function() {
     let gameDone = false;
 
     let numRounds = 0;
+
+    const squares = document.getElementsByClassName('grid-square');
+    const squaresArr = Array.from(squares);
 
     const checkForWin = function() {
         if (plays[0] != null && plays[0] == plays [1] && plays [0] == plays[2] ||
@@ -54,22 +53,53 @@ const logic = (function() {
         };
     };
 
+    const statusMessage = document.getElementById('status');
+
+    const resetButton = document.getElementById('reset-button');
+
     const resetGame = function() {
         for (let i = 0; i < 9; i++) {
             plays[i] = null;
-            board.squaresArr[i].innerHTML = '';
+            squaresArr[i].innerHTML = '';
         };
         whoseTurn = 1;
         numRounds = 0;
         gameDone = false;
-        board.statusMessage.innerText = `It is Player X\'s turn.`;
-        board.addClicksToSquares();
+        statusMessage.innerText = `It is Player X\'s turn.`;
+        addClicksToSquares();
+    };
+
+    const displayWin = function() {
+        if (whoseTurn == 1) {
+            statusMessage.innerText = 'Player X wins!!!'
+        } else {
+            statusMessage.innerText = 'Player O wins!!!'
+        };
+    };
+
+    const displayTie = function() {
+        statusMessage.innerText = 'The game is a tie!'
+    };
+
+    const displayTurn = function() {
+        if (whoseTurn == 1) {
+            statusMessage.innerText = `It is Player X\'s turn.`
+        } else {
+            statusMessage.innerText = `It is Player O\'s turn.`
+        };
     };
 
     const updatePlaysArr = function(play, rawIndex) {
         // updates the play array
         const index = Number(rawIndex);
         plays[index] = play;
+    };
+
+    const updatePlaysDom = function(event, play) {
+        // updates the gameboard squares
+        square = event.target;
+        square.innerHTML = play;
+        square.removeEventListener('click', livePlayer.playMove);
     };
 
     const returnPlay = function() {
@@ -86,45 +116,6 @@ const logic = (function() {
         whoseTurn *= -1;
     };
 
-    return {whoseTurn, gameDone, numRounds, checkForWin, resetGame, updatePlaysArr, returnPlay, changeWhoseTurn};
-})();
-
-const board = (function() {
-    const squares = document.getElementsByClassName('grid-square');
-
-    const squaresArr = Array.from(squares);
-
-    const statusMessage = document.getElementById('status');
-
-    const resetButton = document.getElementById('reset-button');
-
-    const displayWin = function() {
-        if (logic.whoseTurn == 1) {
-            statusMessage.innerText = 'Player X wins!!!'
-        } else {
-            statusMessage.innerText = 'Player O wins!!!'
-        };
-    };
-
-    const displayTie = function() {
-        statusMessage.innerText = 'The game is a tie!'
-    };
-
-    const displayTurn = function() {
-        if (logic.whoseTurn == 1) {
-            statusMessage.innerText = `It is Player X\'s turn.`
-        } else {
-            statusMessage.innerText = `It is Player O\'s turn.`
-        };
-    };
-
-    const updatePlaysDom = function(event, play) {
-        // updates the gameboard squares
-        square = event.target;
-        square.innerHTML = play;
-        square.removeEventListener('click', livePlayer.playMove);
-    };
-
     const addClicksToSquares = function() {
         for (let i = 0; i < squaresArr.length; i++) {
             let square = squaresArr[i];
@@ -133,7 +124,9 @@ const board = (function() {
     };
 
     addClicksToSquares();
-    resetButton.addEventListener('click', logic.resetGame);
+    resetButton.addEventListener('click', resetGame);
 
-    return {squaresArr, statusMessage, displayTie, displayTurn, displayWin, updatePlaysDom, addClicksToSquares};
+    return {gameDone, returnPlay, updatePlaysArr, updatePlaysDom, 
+            numRounds, checkForWin, displayWin, displayTie,
+            displayTurn, changeWhoseTurn};
 })();
