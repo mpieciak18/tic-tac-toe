@@ -1,3 +1,30 @@
+const livePlayer = (function() {
+    const playMove = function(event) {
+        if (gameBoard.gameDone == true) {
+            return null;
+        };
+
+        const play = gameBoard.returnPlay();       
+        const rawIndex = event.target.id.slice(7);       
+        gameBoard.updatePlaysArr(play, rawIndex);
+        gameBoard.updatePlaysDom(event, play);
+
+        gameBoard.numRounds += 1;
+
+        if (gameBoard.checkForWin() == true) {
+            gameBoard.displayWin();
+            gameBoard.gameDone = true;
+        } else if (gameBoard.numRounds == 9) {
+            gameBoard.displayTie();
+        } else {
+            gameBoard.changeWhoseTurn();
+            gameBoard.displayTurn();
+        };
+    };
+
+    return {playMove};
+})();
+
 const gameBoard = (function() {
     const plays = [null, null, null, null, null, null, null, null, null];
 
@@ -72,7 +99,7 @@ const gameBoard = (function() {
         // updates the gameboard squares
         square = event.target;
         square.innerHTML = play;
-        square.removeEventListener('click', playMove);
+        square.removeEventListener('click', livePlayer.playMove);
     };
 
     const returnPlay = function() {
@@ -92,35 +119,14 @@ const gameBoard = (function() {
     const addClicksToSquares = function() {
         for (let i = 0; i < squaresArr.length; i++) {
             let square = squaresArr[i];
-            square.addEventListener('click', playMove);
-        };
-    };
-
-    const playMove = function(event) {
-        if (gameDone == true) {
-            return null;
-        };
-
-        const play = returnPlay();       
-        const rawIndex = event.target.id.slice(7);       
-        updatePlaysArr(play, rawIndex);
-        updatePlaysDom(event, play);
-
-        numRounds += 1;
-
-        if (checkForWin() == true) {
-            displayWin();
-            gameDone = true;
-        } else if (numRounds == 9) {
-            displayTie();
-        } else {
-            changeWhoseTurn();
-            displayTurn();
+            square.addEventListener('click', livePlayer.playMove);
         };
     };
 
     addClicksToSquares();
     resetButton.addEventListener('click', resetGame);
 
-    return {squaresArr, plays};
+    return {gameDone, returnPlay, updatePlaysArr, updatePlaysDom, 
+            numRounds, checkForWin, displayWin, displayTie,
+            displayTurn, changeWhoseTurn};
 })();
