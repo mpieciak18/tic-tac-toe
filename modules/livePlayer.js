@@ -1,15 +1,16 @@
 import { gameBoard } from './gameBoard.js'
 import { gameLogic } from './gameLogic.js'
+import { computerPlayer } from './computerPlayer.js'
 
 const livePlayer = (function() {
     const playMove = function(event) {
-        if (gameLogic.getGameDone() == true) {
+        if (gameLogic.getGameDone() == true || gameLogic.getWhoseTurn() == -1) {
             return null;
         } else {
-            const play = gameLogic.returnPlay();       
+            const play = 'X';       
             const rawIndex = event.target.id.slice(7);       
             gameLogic.updatePlaysArr(play, rawIndex);
-            gameBoard.updatePlaysDom(event, play);
+            gameBoard.updatePlaysDom(event.target, play);
 
             let numRounds = gameLogic.getNumRounds() + 1;
             gameLogic.setNumRounds(numRounds);
@@ -22,6 +23,10 @@ const livePlayer = (function() {
             } else {
                 gameLogic.changeWhoseTurn();
                 gameBoard.displayTurn();
+                let computerMove = computerPlayer.selectMove();
+                window.setTimeout(function() {
+                    computerPlayer.playMove(computerMove)
+                    }, 1000);
             };
         };
     };

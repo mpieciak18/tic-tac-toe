@@ -2,6 +2,7 @@ import { gameBoard } from './gameBoard.js'
 
 const gameLogic = (function() {
     const plays = [null, null, null, null, null, null, null, null, null];
+    const getPlays = () => plays;
 
     // sets user to play first
     let whoseTurn = 1;
@@ -55,14 +56,6 @@ const gameLogic = (function() {
         plays[index] = play;
     };
 
-    const returnPlay = function() {
-        if (whoseTurn == 1) {
-            return 'X';
-        } else {
-            return 'O';
-        };
-    };
-
     const changeWhoseTurn = function() {
         // if whoseTurn == 1 then user plays
         // else computer plays
@@ -71,7 +64,7 @@ const gameLogic = (function() {
 
     return {getWhoseTurn, setWhoseTurn, getGameDone, setGameDone,
             getNumRounds, setNumRounds, checkForWin, resetGame,
-            updatePlaysArr, returnPlay, changeWhoseTurn};
+            updatePlaysArr, changeWhoseTurn, getPlays};
 })();
 
 export { gameLogic };

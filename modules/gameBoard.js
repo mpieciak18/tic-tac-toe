@@ -38,9 +38,9 @@ const gameBoard = (function() {
         };
     };
 
-    const updatePlaysDom = function(event, play) {
+    const updatePlaysDom = function(selectedSquare, play) {
         // updates the gameboard squares
-        let square = event.target;
+        let square = selectedSquare;
         square.innerHTML = play;
         square.removeEventListener('click', livePlayer.playMove);
     };
