@@ -5,9 +5,16 @@ const gameBoard = (function() {
     const squares = document.getElementsByClassName('grid-square');
     const squaresArr = Array.from(squares);
     const getSquaresArr = () => squaresArr;
-    const setSquaresArr = function(index, value) {
-        squaresArr[index].innerHTML = value;
+    const squaresMatr = [[], [], []];
+    for (let i = 0; i < squaresArr.length; i++) {
+        const sqr = squaresArr[i];
+        const row = Number(sqr.id.slice(7,8));
+        const col = Number(sqr.id.slice(8,9)); 
+        squaresMatr[row][col] = sqr;
     };
+    const setSquaresMatr = function(row, col, value) {
+        squaresMatr[row][col].innerHTML = value;
+    }
 
     const statusMessage = document.getElementById('status');
     const getStatusMessage = () => statusMessage;
@@ -54,9 +61,9 @@ const gameBoard = (function() {
 
     addClicksToSquares();
 
-    return {getSquaresArr, setSquaresArr, getStatusMessage, setStatusMessage,
+    return {setSquaresMatr, getStatusMessage, setStatusMessage,
             displayWin, displayTie, displayTurn, updatePlaysDom,
-            addClicksToSquares};
+            addClicksToSquares, getSquaresArr};
 })();
 
 export { gameBoard };

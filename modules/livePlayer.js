@@ -7,9 +7,10 @@ const livePlayer = (function() {
         if (gameLogic.getGameDone() == true || gameLogic.getWhoseTurn() == -1) {
             return null;
         } else {
-            const play = 'X';       
-            const rawIndex = event.target.id.slice(7);       
-            gameLogic.updatePlaysArr(play, rawIndex);
+            const play = 'X';   
+            const row = Number(event.target.id.slice(7,8));
+            const col = Number(event.target.id.slice(8,9));       
+            gameLogic.updatePlaysMatr(play, row, col);
             gameBoard.updatePlaysDom(event.target, play);
 
             let numRounds = gameLogic.getNumRounds() + 1;

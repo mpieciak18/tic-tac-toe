@@ -8,9 +8,10 @@ const computerPlayer = (function() {
             return null;
         } else {
             const play = 'O';
-            const rawIndex = selectedPlay.id.slice(7);
-            gameLogic.updatePlaysArr(play, rawIndex);
-            gameBoard.updatePlaysDom(selectedPlay, play);
+            const row = Number(selectedPlay.id.slice(7,8));
+            const col = Number(selectedPlay.id.slice(8,9));  
+            gameLogic.updatePlaysMatr(play, row, col);
+            gameBoard.updatePlaysDom(selectedPlay, play);    
 
             let numRounds = gameLogic.getNumRounds() + 1;
             gameLogic.setNumRounds(numRounds);
