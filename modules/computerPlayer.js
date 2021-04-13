@@ -31,10 +31,12 @@ const computerPlayer = (function() {
     const selectMove = function() {
         let availPlays = [];
 
-        for (let i = 0; i < gameBoard.getSquaresArr().length; i++) {
-            let play = gameBoard.getSquaresArr()[i];
-            if (play.innerHTML != 'X' && play.innerHTML != 'O') {
-                availPlays.push(play)
+        for (let row = 0; row < 3; row++) {
+            for (let col = 0; col < 3; col++) {
+                let play = gameBoard.getSquaresMatr()[row][col];
+                if (play.innerHTML != 'X' && play.innerHTML != 'O') {
+                    availPlays.push(play)
+                };
             };
         };
 

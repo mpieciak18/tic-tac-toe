@@ -4,7 +4,6 @@ import { livePlayer } from './livePlayer.js'
 const gameBoard = (function() {
     const squares = document.getElementsByClassName('grid-square');
     const squaresArr = Array.from(squares);
-    const getSquaresArr = () => squaresArr;
     const squaresMatr = [[], [], []];
     for (let i = 0; i < squaresArr.length; i++) {
         const sqr = squaresArr[i];
@@ -12,6 +11,7 @@ const gameBoard = (function() {
         const col = Number(sqr.id.slice(8,9)); 
         squaresMatr[row][col] = sqr;
     };
+    const getSquaresMatr = () => squaresMatr;
     const setSquaresMatr = function(row, col, value) {
         squaresMatr[row][col].innerHTML = value;
     }
@@ -63,7 +63,7 @@ const gameBoard = (function() {
 
     return {setSquaresMatr, getStatusMessage, setStatusMessage,
             displayWin, displayTie, displayTurn, updatePlaysDom,
-            addClicksToSquares, getSquaresArr};
+            addClicksToSquares, getSquaresMatr};
 })();
 
 export { gameBoard };
